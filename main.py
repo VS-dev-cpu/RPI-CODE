@@ -4,7 +4,12 @@ import bt
 from datetime import datetime
 import calendar
 
-import RPi.GPIO as gpio
+from gpiozero import Button
+
+### SERVER ONLY CODE ###
+#button = Button(21)
+
+sensor = Button(26)
 
 def unix():
 	d = datetime.utcnow()
@@ -56,6 +61,12 @@ debugging = False
 
 bt = bt.BT()
 
+### SERVER ONLY CODE ###
+#while (1):
+#	if not button.is_pressed:
+#		break
+#bt.start()
+
 bt.sync()
 
 send(10)
@@ -74,6 +85,10 @@ while True:
 		
 	if (unix() - start > duration):
 		break;
+		
+	if not sensor.is_pressed:
+		send(30)
+		time.sleep(5)
 		
 	# Flip the image
 	if (IMAGE_FLIP_VERTICALLY):
