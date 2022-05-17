@@ -1,14 +1,15 @@
-sudo apt install libglew-dev
+#Install opencv
 sudo pip3 install opencv-contrib-python
 
+#Install bluetooth
 sudo apt install bluetooth bluez libbluetooth-dev
 sudo python3 -m pip install pybluez
 
-mv pystart.py ..
+#Write 'python3 ~/pystart.py &' to '~/.bashrc'
+sudo nano ~/.bashrc
 
-sudo echo "python3 ~/pystart.py &" >> ~/.bashrc
-
+#Stop ttyS0 service
 sudo systemctl stop serial-getty@ttyS0.service
 
+#Remove the two pieces related to serial from '/boot/cmdline.txt'
 sudo nano /boot/cmdline.txt
-sudo raspi-config
