@@ -1,0 +1,21 @@
+#Don't Run As a File! - Write every single line separately
+#Before you do it, set up your pi in pi os lite
+
+sudo apt install pip
+
+sudo apt install libglew-dev
+sudo pip3 install opencv-contrib-python
+
+sudo apt install bluetooth bluez libbluetooth-dev
+sudo python3 -m pip install pybluez
+
+sudo apt install python3-gpiozero
+
+mv pystart.py ..
+
+sudo echo "python3 ~/pystart.py &" >> ~/.bashrc
+
+sudo systemctl stop serial-getty@ttyS0.service
+
+sudo nano /boot/cmdline.txt
+sudo raspi-config
