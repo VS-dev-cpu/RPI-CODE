@@ -1,25 +1,34 @@
-import os
-import time
-import bt
+# Libs for Unix time
 from datetime import datetime
 import calendar
 
+# Libs for "Serial"
+import os
+
+# Libs for GPIO
 from gpiozero import Button
 
-### SERVER ONLY CODE ###
-#button = Button(21)
+# Libs for OpenCV
+import cv2
+import numpy as np
 
-sensor = Button(26)
+# Libs for BT
+import bt
 
+# Setup for Unix Time
 def unix():
 	d = datetime.utcnow()
 	return calendar.timegm(d.utctimetuple())
 
+# Setup for "Serial"
 def send(data):
     os.system("echo '" + str(data) + "\\n' >> /dev/ttyS0")
 
-import cv2
-import numpy as np
+# Setup for GPIO
+#button = Button(21)
+sensor = Button(26)
+
+# Setup for OpenCV
 
 W = 320
 H = 240
@@ -29,18 +38,10 @@ IMAGE_FLIP_HORIZONTALLY = True
 IMAGE_RESIZE = True
 
 cap = cv2.VideoCapture(0)
+
 if (IMAGE_RESIZE):
     cap.set(3, int(W))
     cap.set(4, int(H))
-_, frame = cap.read()
-
-# Flip the image
-if (IMAGE_FLIP_VERTICALLY):
-	frame = cv2.flip(frame, 0)
-if (IMAGE_FLIP_HORIZONTALLY):
-    frame = cv2.flip(frame, 1)
-    
-rows, cols, _ = frame.shape
 
 #RED
 low_acorn = np.array([161, 155, 84])
@@ -59,6 +60,7 @@ minacornSize = 150
 
 debugging = False
 
+# Setup for BT
 bt = bt.BT()
 
 ### SERVER ONLY CODE ###
@@ -69,11 +71,16 @@ bt = bt.BT()
 
 bt.sync()
 
+# Setup base things
+import time
+
 send(10)
 time.sleep(3)
 
 start = unix()
 duration = 60
+
+# Main Loop
 
 while True:
 	# Read image from the camera
@@ -83,9 +90,11 @@ while True:
 		print("ERROR: CAN NOT READ IMAGE FROM THE CAMERA")
 		exit()
 		
+	# Exit in case of overtime
 	if (unix() - start > duration):
 		break;
 		
+	# Detect objects and avoid hitting them
 	if not sensor.is_pressed:
 		send(30)
 		time.sleep(5)
