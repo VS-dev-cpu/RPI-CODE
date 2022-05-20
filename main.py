@@ -37,7 +37,7 @@ IMAGE_FLIP_VERTICALLY = True
 IMAGE_FLIP_HORIZONTALLY = True
 IMAGE_RESIZE = True
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(-1)
 
 if (IMAGE_RESIZE):
     cap.set(3, int(W))
