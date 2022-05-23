@@ -25,16 +25,16 @@ def send(data):
     os.system("echo '" + str(data) + "\\n' >> /dev/ttyS0")
 
 # Setup for GPIO
-#button = Button(21)
-sensor = Button(26)
+#button = Button(26)
+sensor = Button(19)
 
 # Setup for OpenCV
 
 W = 320
 H = 240
 
-IMAGE_FLIP_VERTICALLY = True
-IMAGE_FLIP_HORIZONTALLY = True
+IMAGE_FLIP_VERTICALLY = False
+IMAGE_FLIP_HORIZONTALLY = False
 IMAGE_RESIZE = True
 
 cap = cv2.VideoCapture(-1)
@@ -129,19 +129,6 @@ while True:
 		acorn = True
 		break
     
-	# Move the robot
-    
-	if (acorn):
-		wall = False
-		if (acornX < (W/2 - W/gap)):
-			send(2)
-		elif (acornX > (W/2 + W/gap)):
-			send(1)
-		else:
-			send(3)
-	else:
-		send(1)
-	
 	key = cv2.waitKey(1)
     
 	# Exit, if needed
@@ -151,6 +138,8 @@ while True:
     
 	if (acorn and acornSize > minacornSize):
 		break
+	else:
+		send(3)
     
 send(0)
 send(20)
